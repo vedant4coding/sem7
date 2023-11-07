@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool compare(pair<int, int> p1, pair<int, int> p2) {
+    double v1 = (double)p1.first / p1.second;
+    double v2 = (double)p2.first / p2.second;
+
+    return v1 > v2;
+}
+
+int main() {
+    int n;
+    cout << "Enter the number of items: ";
+    cin >> n;
+
+    vector<pair<int, int>> a(n);
+    for (int i = 0; i < n; i++) {
+        cout << "Enter the value and weight for item " << i + 1 << ": ";
+        cin >> a[i].first >> a[i].second;
+    }
+
+    int w;
+    cout << "Enter the maximum capacity of the knapsack: ";
+    cin >> w;
+
+    sort(a.begin(), a.end(), compare);
+
+    double ans = 0;
+    vector<pair<int, int>> selectedItems;
+
+    cout << "Selected items:" << endl;
+    for (int i = 0; i < n; i++) {
+        if (w >= a[i].second) {
+            ans += a[i].first;
+            w -= a[i].second;
+            selectedItems.push_back(a[i]);
+        } else {
+            double vw = (double)a[i].first / a[i].second;
+            double selectedValue = vw * w;
+            ans += selectedValue;
+            selectedItems.push_back(make_pair(selectedValue, w));
+            break;
+        }
+    }
+
+    // Display the selected items and their weights and values
+    for (const auto &item : selectedItems) {
+        cout << "Weight: " << item.second << ", Value: " << item.first << endl;
+    }
+
+    cout << "Total value in the knapsack: " << ans << endl;
+
+    return 0;
+}

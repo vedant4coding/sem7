@@ -1,0 +1,29 @@
+import pandas as pd
+df = pd.read_csv("emails.csv")
+
+df.info()
+
+df.isnull().sum()
+
+x = df.iloc[:,1:3001]
+x
+
+y = df.iloc[:,-1].values
+y
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.25)
+
+from sklearn.svm import SVC
+svc = SVC(C=1.0,kernel = 'rbf',gamma='auto')
+svc_fit = svc.fit(x_train,y_train)
+svc_pred = svc_fit.predict(x_test)
+
+from sklearn.metrics import accuracy_score
+print("accuracy score of svm is:",accuracy_score(svc_pred,y_test))
+
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier()
+knn_fit = knn.fit(x_train,y_train)
+knn_pred = knn_fit.predict(x_test)
+print("accuracy score of knn is:",accuracy_score(knn_pred,y_test)
